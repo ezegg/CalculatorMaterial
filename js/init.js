@@ -10,3 +10,9 @@
 function clean() {
   $( '#result' ).empty();
 }
+
+function addScreen(value) {
+  var model = $('#result');
+  //model.empty();
+  model.append(value);
+}
