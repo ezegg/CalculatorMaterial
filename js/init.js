@@ -6,3 +6,7 @@
 
   }); // end of document ready
 })(jQuery); // end of jQuery name space
+
+function clean() {
+  $( '#result' ).empty();
+}
