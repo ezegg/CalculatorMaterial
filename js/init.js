@@ -7,66 +7,93 @@
   }); // end of document ready
 })(jQuery); // end of jQuery name space
 
-
-/*Varibles goblals for control the state of calculator*/
-x="0";
-xi=1;
-point=0;
-ni=0;
+x="0"; //número en pantalla
+xi=1; //iniciar número en pantalla: 1=si; 0=no;
+point=0; //estado coma decimal 0=no, 1=si;
+ni=0; //número oculto o en espera.
 
 function clean() {
   $( '#result' ).empty();
-  x="0";
-  xi=1;
-  point=0;
+  x="0"; //número en pantalla
+  xi=1; //iniciar número en pantalla: 1=si; 0=no;
+  point=0; //estado coma decimal 0=no, 1=si;
   ni=0;
 }
 
 function addScreen(value) {
-  if (x=="0" || x == '-' || xi==1  ) {
-    $( '#result' ).append(value);
-    x+=value;
-    if (value==".") {
-      $( '#result' ).empty();
-      $( '#result' ).append('0.');
-      x=value;
-      point=1;
+  console.debug('addScreen antes valor de x:' + x)
+
+  if (x=="0" || x == '-' || xi==1  ) {	// inicializar un número,
+    if (x == '-') {
+      $( '#result' ).append(value); //mostrar en pantalla
+      x+=value; //save Number
+    }else {
+      $( '#result' ).append(value); //mostrar en pantalla
+      x=value; //save Number
+      if (value==".") { //user write point that means is decimal number
+        $( '#result' ).empty();
+        $( '#result' ).append('0.');
+        //pantalla.innerHTML="0."; //escribimos 0.
+        x=value; //save Number
+        point=1; //cambiar estado de la coma
+      }
+
     }
-  } else {
-      if (value=='.' && point==0) {
+
+
+  } else { //continuar escribiendo un número
+      if (value=="." && point==0) { //si escribimos una coma decimal pòr primera vez
+        //pantalla.innerHTML+=xx;
         $( '#result' ).append(value);
         x+=value; //save number after point
-        point=1; //change state point
-      } else if (value=='.' && point==1) {}
+        point=1; //cambiar el estado de la coma
+      } else if (value=="." && point==1) {}//si intentamos escribir una segunda coma decimal no realiza ninguna acción.
+
+         //Resto de casos: escribir un número del 0 al 9:
          else {
+             //pantalla.innerHTML+=xx;
               $( '#result' ).append(value);
              x+=value
          }
+
     }
-    xi=0 //Change State for start number on screen.
+    console.debug('addScreen despues valor de x:' + x)
+      xi=0 //el número está iniciado y podemos ampliarlo.
 }
 
 function operar(s) {
   var sNeg = 0;
-  if (s == '-' && sNeg == 0) {// neccesary for know if the firts time is nomber with '-'
+  var nextNumber = 0;
+  console.debug(s)
+  console.debug(s == '-' && ni == 0 )
+
+  if (s == '-' && x == "0") {
+    console.debug('entro ....')
     x= s;
     $( '#result' ).append(s);
     sNeg = 1;
+    console.debug('Operar valor de x:' + x +' valor de sNeg:'+ sNeg)
   } else {
-    ni=x //we need save the firts numer
-    op=s; //we need save type operation.
+    console.debug('entramos al else' + x)
+    //igualar() //si hay operaciones pendientes se realizan primero
+    ni=x //ponemos el 1º número en "numero en espera" para poder escribir el segundo.
+    console.debug('Numero en espera:' + ni)
+    op=s; //guardamos tipo de operación.
+    console.debug('tipo de operacion' + op)
     $( '#result' ).empty();
     x="0";
-    xi=1;
-    sNeg = 1;
+    xi=1; //inicializar pantalla.
+    console.debug(ni +'..... '+op)
+    sNeg = 0;
   }
 }
 function makeOperation() {
-      sl=ni+op+x; // save the operation in to string
-      sol=eval(sl)
+      sl=ni+op+x; // escribimos la operación en una cadena
+      console.debug('cadena a operar' + sl)
+      sol=eval(sl) //convertimos la cadena a código y resolvemos
       $( '#result' ).empty();
       $( '#result' ).append(sol);
-      x=sol;
-      op="no";
-      xi=1;
+      x=sol; //guardamos la solución
+      op="no"; //ya no hay operaciones pendientes
+      xi=1; //se puede reiniciar la pantalla.
 }
