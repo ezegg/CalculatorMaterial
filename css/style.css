@@ -5,7 +5,8 @@
  *
  * Made By MaterializeCSS.com
  */
-
+ @import url('http://fonts.googleapis.com/css?family=Lato:300');
+ @import url('http://weloveiconfonts.com/api/?family=entypo');
 nav ul a,
 nav .brand-logo {
   color: #444;
@@ -54,4 +55,30 @@ p {
 
 footer.page-footer {
   margin: 0;
+}
+
+
+.social {
+  display: inline-block;
+  width: 70px;
+  height: 70px;
+  margin: 0 10px;
+  line-height: 70px;
+  font-family: Entypo;
+  font-size: 35px;
+  text-align: center;
+  color: #bbb;
+  border-radius: 50%;
+  background: #eee;
+  overflow: hidden;
+  transition: color .3s;
+}
+
+.social:hover {
+  color: #59d;
+  cursor: pointer;
+}
+
+.red{
+  background-color: red;
 }
